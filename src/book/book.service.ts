@@ -6,6 +6,8 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { Book } from './schemas/book.schema';
+// import { Query } from 'mongoose';
+import { Query } from 'express-serve-static-core';
 
 @Injectable()
 export class BookService {
@@ -14,8 +16,22 @@ export class BookService {
     private bookModel: mongoose.Model<Book>,
   ) {}
 
-  async findAll(): Promise<Book[]> {
-    const books = await this.bookModel.find().exec();
+  async findAll(query : Query): Promise<Book[]> {
+    const resperpage = 5
+    const currentPage = Number(query.page) || 1
+    const skip = resperpage * (currentPage - 1)
+
+    const keyword = query.keyword ? {
+    title : {
+      $regex: query.keyword,
+      $options: 'i'
+    }
+    } : {};
+    const books = await this.bookModel
+    .find({...keyword })
+    .limit(resperpage)
+    .skip(skip)
+    .exec();
     return books;
   }
 
