@@ -16,7 +16,7 @@ imports : [
             return {
                 secret: config.get('JWT_SECRET'),
                 signOptions: {
-                    exipreIn: config.get('JWT_EXPIRE'),
+                    expiresIn: config.get('JWT_EXPIRE'),
                 },
             };
         },
