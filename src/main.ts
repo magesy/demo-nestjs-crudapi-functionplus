@@ -3,11 +3,12 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
+  let port = 3000;
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
-  await app.listen(3000);
+  await app.listen(port);
 
-  console.log('Server started on port 3000');
-  console.log('http://localhost:3000');
+  console.log(`Server started on port: ${port}`);
+  console.log(`http://localhost:${port}`);
 }
 bootstrap();
